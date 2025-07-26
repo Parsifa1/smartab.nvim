@@ -2,15 +2,11 @@ local M = { position_history = {} }
 local utils = require "smartab.utils"
 local config = require "smartab.config"
 
----@class ntab.tab
-local tab = {}
-
 ---@param lines string[]
 ---@param pos integer[]
 ---@param opts? out.opts
----
 ---@return md | nil
-local function out(lines, pos, opts)
+local function tab_out(lines, pos, opts)
     opts = vim.tbl_extend("force", {
         ignore_beginning = false,
         behavior = config.behavior,
@@ -59,7 +55,7 @@ end
 ---smart tab
 ---returns false if TS not available/parent doesn't exist
 ---@return boolean
-function M.smart_tab()
+function M.tab()
     local node_ok, node = pcall(vim.treesitter.get_node)
     -- ignore if treesitter is not available
     if not node_ok then
@@ -85,7 +81,7 @@ function M.smart_tab()
     local current_pos = vim.api.nvim_win_get_cursor(0)
     local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 
-    md = out(lines, current_pos)
+    md = tab_out(lines, current_pos)
     if md then
         -- if neotab.md is available, set cursor for jump out bracket
         local ok = pcall(utils.set_cursor, md.pos)
@@ -108,7 +104,7 @@ end
 
 ---Jump back to the previous cursor position
 ---@return boolean
-function M.smart_tab_backward()
+function M.s_tab()
     local prev_pos = utils.remove_history()
     local ok = pcall(vim.api.nvim_win_set_cursor, 0, prev_pos)
     return ok

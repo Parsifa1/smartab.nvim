@@ -1,7 +1,7 @@
 local utils = require "smartab.utils"
 local config = require "smartab.config"
-local smart_tab = require("smartab.jump").smart_tab
-local smart_tab_backward = require("smartab.jump").smart_tab_backward
+local tab = require("smartab.tabs").tab
+local s_tab = require("smartab.tabs").s_tab
 
 local keymap = function(filetype, buffer)
     local mapping = config.mapping --[[@as string]]
@@ -12,7 +12,7 @@ local keymap = function(filetype, buffer)
     end
     -- Setup forward tab mapping
     vim.keymap.set("i", mapping, function()
-        if utils.is_blank_line() or not smart_tab() then
+        if utils.is_blank_line() or not tab() then
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(mapping, true, true, true), "n", false)
         end
     end, {
@@ -23,7 +23,7 @@ local keymap = function(filetype, buffer)
     -- Setup backward tab mapping
     if backward_mapping then
         vim.keymap.set("i", backward_mapping, function()
-            if utils.not_empty_history() and not smart_tab_backward() then
+            if utils.not_empty_history() and not s_tab() then
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(backward_mapping, true, true, true), "n", false)
             end
         end, {
