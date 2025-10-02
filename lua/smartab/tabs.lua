@@ -69,10 +69,11 @@ function M.tab()
         return false
     end
     -- ignore if luaSnip is available and can expand
+    -- INFO: disabled for now, might add config later
     local luasnip_ok, luasnip = pcall(require, "luasnip")
     if luasnip_ok and luasnip.expand_or_locally_jumpable() then
         luasnip.expand {}
-        return false
+        return true
     end
 
     ---@type md|nil
