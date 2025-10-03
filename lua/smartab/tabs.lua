@@ -65,7 +65,7 @@ function M.tab()
         node = node:parent()
     end
     -- ignore if can't find parent node
-    if not node then
+    if not node or node:parent() == nil then
         return false
     end
     -- ignore if luaSnip is available and can expand
